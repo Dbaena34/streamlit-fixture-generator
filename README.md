@@ -59,8 +59,8 @@ Una vez realizado el sorteo:
 
 1. Clonar el repositorio:
    ```bash
-   git clone <URL_DEL_REPOSITORIO>
-   cd <NOMBRE_DEL_REPO>
+   git clone <https://github.com/Dbaena34/streamlit-fixture-generator>
+   cd <streamlit-fixture-generator>
 
 2. Instalar dependencias:
 
