@@ -145,7 +145,7 @@ from PIL import Image
 
 def obtener_escudo(nombre_equipo):
     """Devuelve la ruta del escudo si existe, o None."""
-    base_path = os.path.join(r"A:\PES", "images")
+    base_path = "images"
     for ext in [".png", ".jpg", ".jpeg", ".webp"]:
         posible = os.path.join(base_path, f"{nombre_equipo}{ext}")
         if os.path.exists(posible):
