@@ -1,12 +1,9 @@
 # app.py
-import streamlit as st
-import pandas as pd
 import io
-from modules import sorteo as sor
+import pandas as pd
 from PIL import Image
-
 import streamlit as st
-
+from modules import sorteo as sor
 
 # Cargar el logo (ruta relativa al directorio desde donde ejecutas streamlit)
 logo = Image.open("images/Logo.png")
