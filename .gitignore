@@ -1,0 +1,18 @@
+# Archivos de datos y diseño
+*.xlsx
+*.ai
+
+# Notebooks de Jupyter
+*.ipynb
+
+# Carpetas de datos y resultados
+1_Codigos/
+Estadisticas_Extraidas/
+football-logos-master/
+Imagenes_Partidos/
+Pruebas/
+Resultados/
+
+# Python y temporales
+__pycache__/
+.DS_Store
