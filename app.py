@@ -3,6 +3,7 @@ import io
 import pandas as pd
 from PIL import Image
 import streamlit as st
+from datetime import datetime
 from modules import sorteo as sor
 
 # Cargar el logo (ruta relativa al directorio desde donde ejecutas streamlit)
@@ -306,10 +307,11 @@ if st.session_state.partidos and st.session_state.indice_partido is None:
             with pd.ExcelWriter(buffer, engine="openpyxl") as writer:
                 df_final.to_excel(writer, sheet_name="Partidos", index=False)
             buffer.seek(0)
+            fecha_actual = datetime.now().strftime("%d_%m_%y")
             st.download_button(
                 "⬇️ Descargar Excel",
                 data=buffer,
-                file_name="Partidos_streamlit.xlsx",
+                file_name=f"Partidos_{fecha_actual}.xlsx",
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             )
         except Exception as e:
@@ -318,7 +320,6 @@ if st.session_state.partidos and st.session_state.indice_partido is None:
 st.subheader("ℹ️ Sobre esta aplicación")
 st.markdown("""
 Esta aplicación permite gestionar un torneo de PES (Pro Evolution Soccer) de manera sencilla e intuitiva. Algunas de las características incluyen:
-
 - Registro de resultados de partidos.
 - Visualización de estadísticas de jugadores.
 - Descarga de resultados en formato Excel.
