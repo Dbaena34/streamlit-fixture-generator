@@ -1,10 +1,37 @@
 # app.py
 import io
+import sqlite3
 import pandas as pd
 from PIL import Image
 import streamlit as st
 from datetime import datetime
 from modules import sorteo as sor
+
+def crear_db():
+    conn = sqlite3.connect('usuarios_torneo.db')
+    c = conn.cursor()
+    # Creamos la tabla si no existe
+    c.execute('''CREATE TABLE IF NOT EXISTS usuarios 
+                 (nombre_usuario TEXT PRIMARY KEY, password TEXT)''')
+    
+    # Insertamos un usuario por defecto si la tabla está vacía
+    c.execute("SELECT COUNT(*) FROM usuarios")
+    if c.fetchone()[0] == 0:
+        c.execute("INSERT INTO usuarios VALUES ('admin', 'elcesar')")
+        c.execute("INSERT INTO usuarios VALUES ('jugador1', 'clave123')")
+        conn.commit()
+    conn.close()
+
+def validar_usuario(usuario, clave):
+    conn = sqlite3.connect('usuarios_torneo.db')
+    c = conn.cursor()
+    c.execute("SELECT * FROM usuarios WHERE nombre_usuario = ? AND password = ?", (usuario, clave))
+    resultado = c.fetchone()
+    conn.close()
+    return resultado
+
+# Ejecutar la creación al cargar la app
+crear_db()
 
 # Cargar el logo (ruta relativa al directorio desde donde ejecutas streamlit)
 logo = Image.open("images/Logo.png")
@@ -60,10 +87,6 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 
-# --- 1. DEFINIR CREDENCIALES (Puedes cambiarlas aquí) ---
-USUARIO_CORRECTO = "admin"
-CLAVE_CORRECTA = "pes2024"
-
 # --- 2. INICIALIZAR ESTADO DE AUTENTICACIÓN ---
 if "autenticado" not in st.session_state:
     st.session_state.autenticado = False
@@ -77,12 +100,14 @@ def login():
         submit = st.form_submit_button("Entrar")
         
         if submit:
-            if usuario == USUARIO_CORRECTO and clave == CLAVE_CORRECTA:
+            # Consultamos la base de datos
+            if validar_usuario(usuario, clave):
                 st.session_state.autenticado = True
+                st.session_state.usuario_actual = usuario # Guardamos quién entró
                 st.rerun()
             else:
                 st.error("Usuario o contraseña incorrectos")
-
+                
 # --- 4. CONTROL DE FLUJO ---
 if not st.session_state.autenticado:
     login()
@@ -92,7 +117,21 @@ else:
         st.session_state.autenticado = False
         st.rerun()
     # 💅 Tema visual personalizado
-
+    # Dentro del "else" (donde ya están logueados)
+    if st.session_state.usuario_actual == "admin":
+        with st.sidebar.expander("➕ Registrar Nuevo Usuario"):
+            nuevo_u = st.text_input("Nuevo Usuario")
+            nueva_c = st.text_input("Nueva Clave", type="password")
+            if st.button("Guardar Usuario"):
+                try:
+                    conn = sqlite3.connect('usuarios_torneo.db')
+                    c = conn.cursor()
+                    c.execute("INSERT INTO usuarios VALUES (?, ?)", (nuevo_u, nueva_c))
+                    conn.commit()
+                    conn.close()
+                    st.success("¡Usuario creado!")
+                except:
+                    st.error("El usuario ya existe")
 
     col9,col10=st.columns(2)
 
