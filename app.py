@@ -18,7 +18,7 @@ def crear_db():
     c.execute("SELECT COUNT(*) FROM usuarios")
     if c.fetchone()[0] == 0:
         c.execute("INSERT INTO usuarios VALUES ('admin', 'elcesar')")
-        c.execute("INSERT INTO usuarios VALUES ('jugador1', 'clave123')")
+        #c.execute("INSERT INTO usuarios VALUES ('jugador1', 'clave123')")
         conn.commit()
     conn.close()
 
