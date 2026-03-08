@@ -149,6 +149,7 @@ else:
         "Barcelona", "PSG", "Inglaterra", "Portugal", "España", "Francia", "Holanda", "Italia", 
         "Alemania", "Brasil", "Argentina", "Colombia", "Newcastle", "Atalanta", "Betis", "Benfica",
         "Flamengo", "Bélgica","Suiza","Dinamarca","Polonia","Serbia","Marruecos","Uruguay", "Atletico Nacional","A tu Eleccion"
+        "Brighton", "Valencia","Galatasaray","Inter Miami","América","Lyon"
     ]
 
     st.divider()
