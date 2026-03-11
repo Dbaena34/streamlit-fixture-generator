@@ -123,6 +123,11 @@ def guardar_resultados(partidos):
     fecha_actual = datetime.now().strftime("%d_%m_%y")
     ruta_directorio = r"A:\PES\Resultados"
     ruta_archivo = os.path.join(ruta_directorio, f"Partidos_{fecha_actual}.xlsx")
+    # 1. Eliminar filas donde "Ganador" sea estrictamente nulo (NaN)
+    df= df.dropna(subset=["Ganador"])
+    # 2. Eliminar filas donde "Ganador" sea un string vacío, solo espacios o un guion
+    # Usamos .str.strip() para atrapar celdas que tengan espacios invisibles
+    df = df[~df["Ganador"].str.strip().isin(["", "-", "None"])]
     df.to_excel(ruta_archivo, index=False)
 
     return ruta_archivo
