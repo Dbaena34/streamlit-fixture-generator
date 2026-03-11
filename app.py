@@ -350,6 +350,13 @@ else:
             "Penales Local", "Penales Visitante", "Ganador"
         ]
         df_final = pd.DataFrame(st.session_state.partidos, columns=columnas)
+        # 1. Eliminar filas donde "Ganador" sea estrictamente nulo (NaN)
+        df_final= df_final.dropna(subset=["Ganador"])
+
+        # 2. Eliminar filas donde "Ganador" sea un string vacío, solo espacios o un guion
+        # Usamos .str.strip() para atrapar celdas que tengan espacios invisibles
+        df_final = df_final[~df_final["Ganador"].str.strip().isin(["", "-", "None"])]
+
         st.dataframe(df_final)
 
         # Resumen de victorias
